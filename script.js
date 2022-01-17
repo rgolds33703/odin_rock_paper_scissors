@@ -1,12 +1,16 @@
-let playerScore;
-let computerScore;
+let playerScore = 0;
+let computerScore = 0;
 
-function game() {
-    playerScore = 0;
-    computerScore = 0;
-    determineBestOfFive();
-    console.log(announceWinner());
-}
+const rock_btn = document.querySelector('#rock');
+const paper_btn = document.querySelector('#paper');
+const scissors_btn = document.querySelector('#scissors');
+const scores = document.querySelector('#scores');
+const winner = document.querySelector('#winner');
+const buttons = document.querySelectorAll('button');
+
+rock_btn.addEventListener('click', () => playRound('Rock', computerPlay()));
+paper_btn.addEventListener('click', () => playRound('Paper', computerPlay()));       
+scissors_btn.addEventListener('click', () => playRound('Scissors', computerPlay()));
 
 function computerPlay() {
     let choices = ['Rock', 'Paper', 'Scissors'];
@@ -15,34 +19,38 @@ function computerPlay() {
 }
 
 function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection[0].toUpperCase() + playerSelection.slice(1);
+    const results = document.querySelector('#results');
     if (playerSelection === computerSelection) {
-        return `It's a tie!`
+        results.textContent = `It's a tie!`;
     } else if ((playerSelection === 'Rock' && computerSelection === 'Scissors') ||
     (playerSelection === 'Paper' && computerSelection === 'Rock') ||
     (playerSelection === 'Scissors' && computerSelection === 'Paper')) {
         playerScore++
-        return `You win! ${playerSelection} beats ${computerSelection}!`;
+        results.textContent = `You win! ${playerSelection} beats ${computerSelection}!`;
         } else {
         computerScore++
-        return `You lose! ${computerSelection} beats ${playerSelection}!`
+        results.textContent = `You lose! ${computerSelection} beats ${playerSelection}!`;
         }
-}
-
-function determineBestOfFive() {
-    while (playerScore < 5 && computerScore < 5) {
-        let playerSelection = prompt("Choose Rock, Paper, or Scissors");
-        let computerSelection = computerPlay();
-        console.log(playRound(playerSelection, computerSelection));
+    scores.textContent = `Player Score: ${playerScore} Computer Score: ${computerScore}`;
+    if (playerScore >= 5 || computerScore >= 5) {
+        rock_btn.outerHTML = rock_btn.outerHTML;
+        paper_btn.outerHTML = paper_btn.outerHTML;
+        scissors_btn.outerHTML = scissors_btn.outerHTML;
     }
-}
-
-function announceWinner() {
     if (playerScore === 5) {
-        return `Player Wins! ${playerScore} to ${computerScore}!`
-    } else {
-        return `Computer Wins! ${computerScore} to ${playerScore}!`
+        winner.textContent = `Player Wins! ${playerScore} to ${computerScore}!`
+    } else if (computerScore ===5) {
+        winner.textContent = `Computer Wins! ${computerScore} to ${playerScore}!`
     }
 }
 
-game();
+
+// function determineBestOfFive() {
+//     while (playerScore < 5 && computerScore < 5) {
+//         let playerSelection = prompt("Choose Rock, Paper, or Scissors");
+//         let computerSelection = computerPlay();
+//         console.log(playRound(playerSelection, computerSelection));
+//     }
+// }
+
+
